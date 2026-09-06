@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const User = require('../models/User.model');
 const ApiError = require('../utils/ApiError');
+const tokenService = require('./token.service');
 
 const registerUser = async ({ name, email, password }) => {
   const existingUser = await User.findOne({ email });
@@ -36,11 +36,7 @@ const loginUser = async ({ email, password }) => {
     throw new ApiError(401, 'Invalid email or password');
   }
 
-  const token = jwt.sign(
-    { userId: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: '1d' }
-  );
+  const token = await tokenService.issueToken(user._id, user.role);
 
   return {
     token,

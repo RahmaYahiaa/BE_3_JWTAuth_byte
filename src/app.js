@@ -1,5 +1,6 @@
 const express = require('express');
 const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
 const notFound = require('./middlewares/notFound.middleware');
 const errorHandler = require('./middlewares/errorHandler.middleware');
 
@@ -12,6 +13,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
